@@ -1,3 +1,25 @@
+import timeit
+
+def fib_recursive(n):
+    if n <= 1:
+        return n
+    return fib_recursive(n - 1) + fib_recursive(n - 2)
+
+
+def fib_memo(n, memo=None):
+    if memo is None:
+        memo = {}
+
+    if n <= 1:
+        return n
+
+    if n in memo:
+        return memo[n]
+
+    memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
+    return memo[n]
+
+
 def fib_dp(n):
     if n <= 1:
         return n
@@ -10,6 +32,49 @@ def fib_dp(n):
     return b
 
 
+def fib_fast_doubling(n):
+    def fib_pair(k):
+        if k == 0:
+            return 0, 1
+
+        a, b = fib_pair(k // 2)
+
+        c = a * (2 * b - a)
+        d = a * a + b * b
+
+        if k % 2 == 0:
+            return c, d
+        else:
+            return d, c + d
+
+    return fib_pair(n)[0]
+
+
+print("FIBONACCI NUMBER")
+print("----------------")
+print("1. Naive Recursion")
+print("2. Memoization")
+print("3. Iterative DP")
+print("4. Fast Doubling")
+
+choice = int(input("\nEnter your choice (1-4): "))
 n = int(input("Enter n: "))
 
-print("Fibonacci number:", fib_dp(n))
+if choice == 1:
+    result = fib_recursive(n)
+    print("\nFibonacci number:", result)
+
+elif choice == 2:
+    result = fib_memo(n)
+    print("\nFibonacci number:", result)
+
+elif choice == 3:
+    result = fib_dp(n)
+    print("\nFibonacci number:", result)
+
+elif choice == 4:
+    result = fib_fast_doubling(n)
+    print("\nFibonacci number:", result)
+
+else:
+    print("\nInvalid choice!")
