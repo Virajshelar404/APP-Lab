@@ -1,0 +1,10 @@
+import pandas as pd
+
+# Read the CSV file
+df = pd.read_csv("attendance.csv")
+
+# Calculate total attendance days for each employee
+total = df.groupby("Employee")["Attendance"].sum()
+
+# Display the result
+print(total)
